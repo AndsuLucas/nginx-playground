@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  backend:
+    image: bitnami/php-fpm
+    command: php -S 0.0.0.0:3001 -t /data/code/
+    volumes:
+      - ./data/code:/data/code
+    expose:
+      - 3001
+
+  nginx:
+    image: nginx:alpine
+    ports: 
+      - 80:80
+    volumes:
+      - ./etc/nginx/conf.d/default.conf.nginx:/etc/nginx/conf.d/default.conf
+      - ./data/assets:/data/assets
+    depends_on:
+      - backend
